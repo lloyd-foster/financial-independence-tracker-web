@@ -17,18 +17,8 @@ export type Expense = {
   amount: number
 }
 
-// The five inputs from the Python script, stored as the text the user typed.
-export type OriginalInputs = {
-  rent: string
-  phone: string
-  groceries: string
-  transportation: string
-  biWeeklyIncome: string
-}
-
 export type SavedData = {
   isSample: boolean
-  original: OriginalInputs
   income: string
   frequency: Frequency
   expenses: Expense[]
@@ -40,13 +30,6 @@ const STORAGE_KEY = 'fi-tracker-data-v1'
 export function getSampleData(): SavedData {
   return {
     isSample: true,
-    original: {
-      rent: '1200',
-      phone: '45',
-      groceries: '380',
-      transportation: '95',
-      biWeeklyIncome: '1450',
-    },
     income: '1450',
     frequency: 'biweekly',
     expenses: [
@@ -63,7 +46,6 @@ export function getSampleData(): SavedData {
 export function getEmptyData(): SavedData {
   return {
     isSample: false,
-    original: { rent: '', phone: '', groceries: '', transportation: '', biWeeklyIncome: '' },
     income: '',
     frequency: 'monthly',
     expenses: [],
@@ -76,8 +58,13 @@ export function loadData(): SavedData {
     if (!text) return getSampleData()
 
     const data = JSON.parse(text) as SavedData
-    if (!data.original || !Array.isArray(data.expenses)) return getSampleData()
-    return data
+    if (typeof data.income !== 'string' || !Array.isArray(data.expenses)) return getSampleData()
+    return {
+      isSample: Boolean(data.isSample),
+      income: data.income,
+      frequency: data.frequency,
+      expenses: data.expenses,
+    }
   } catch {
     return getSampleData()
   }

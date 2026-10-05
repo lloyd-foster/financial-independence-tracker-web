@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react'
 import { RotateCcw, Trash } from 'lucide-react'
 import { Button } from './ui/button'
-import { OriginalCalculator } from './original-calculator'
 import { IncomeSection } from './income-section'
 import { ExpenseSection } from './expense-section'
 import { SummaryCards } from './summary-cards'
@@ -16,7 +15,6 @@ import {
   getSampleData,
   loadData,
   saveData,
-  type OriginalInputs,
   type SavedData,
 } from '@/lib/storage'
 
@@ -38,10 +36,6 @@ export function TrackerApp() {
   // Any edit means the user is now working with their own numbers.
   function update(changes: Partial<SavedData>) {
     setData((previous) => ({ ...previous, ...changes, isSample: false }))
-  }
-
-  function updateOriginal(field: keyof OriginalInputs, value: string) {
-    update({ original: { ...data.original, [field]: value } })
   }
 
   function addExpense(values: ExpenseValues) {
@@ -107,21 +101,7 @@ export function TrackerApp() {
         </div>
       </div>
 
-      <OriginalCalculator inputs={data.original} onChange={updateOriginal} />
-
-      <section aria-labelledby="tracker-heading" className="flex flex-col gap-4">
-        <div className="flex flex-col gap-1">
-          <p className="text-xs font-semibold uppercase tracking-wider text-primary">
-            Part 2 · Additional features
-          </p>
-          <h2 id="tracker-heading" className="text-xl font-semibold text-balance">
-            Flexible budget tracker
-          </h2>
-          <p className="text-sm text-muted-foreground text-pretty">
-            Separate from Part 1. Choose any pay schedule and track as many expenses as you like.
-          </p>
-        </div>
-
+      <section aria-label="Budget overview" className="flex flex-col gap-4">
         <SummaryCards monthlyIncome={monthlyIncome} totalExpenses={totalExpenses} />
 
         <div className="grid gap-4 lg:grid-cols-5">

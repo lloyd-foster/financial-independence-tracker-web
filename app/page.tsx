@@ -9,7 +9,7 @@ export default function Page() {
             Financial Independence Tracker
           </h1>
           <p className="mt-1 text-muted-foreground text-pretty">
-            See where your money goes each month. All amounts in USD.
+            Track your income, expenses, and monthly balance.
           </p>
         </div>
       </header>
